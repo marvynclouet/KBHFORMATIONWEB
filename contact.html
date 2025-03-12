@@ -211,19 +211,22 @@
 				"Beatmaking": "/brochures/brochure_beatmaking.pdf"
 			};
 			
+			if (brochures[formation]) {
+				const confirmDownload = confirm("Souhaitez-vous télécharger la brochure de la formation " + formation + " ?");
+				
+				if (confirmDownload) {
+					// Télécharger la brochure immédiatement
+					window.open(brochures[formation], '_blank');
+				}
+			}
+			
 			// Envoyer le formulaire à FormSubmit
 			fetch(e.target.action, {
 				method: 'POST',
 				body: new FormData(e.target)
 			}).then(() => {
-				// Après l'envoi, télécharger la brochure
-				if (brochures[formation]) {
-					window.location.href = brochures[formation];
-					// Rediriger vers la page de remerciement après un court délai
-					setTimeout(() => {
-						window.location.href = 'merci.html';
-					}, 1000);
-				}
+				// Rediriger vers la page de remerciement
+				window.location.href = 'merci.html';
 			});
 			
 			return false;
