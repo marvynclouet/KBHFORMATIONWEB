@@ -496,38 +496,56 @@
 			</div>
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2">
-					<form action="#" method="post">
-						<div class="form-group">
-							<label for="name">Nom</label>
-							<input type="text" class="form-control" id="name" placeholder="Votre nom" required>
+					<form id="contactForm" action="https://formsubmit.co/marvynbinguimale@gmail.com" method="POST" onsubmit="return handleSubmit(event)">
+						<!-- Activation de FormSubmit -->
+						<input type="hidden" name="_honey" value="">
+						<input type="hidden" name="_captcha" value="false">
+						<input type="hidden" name="_subject" value="Nouvelle demande de formation KBH">
+						<input type="hidden" name="_template" value="table">
+						<input type="hidden" name="_next" value="merci.html">
+						<input type="hidden" name="_cc" value="emmanuel.kabouh@hotmail.com">
+						
+						<div class="row form-group">
+							<div class="col-md-12">
+								<label for="fname">Nom et Prénom</label>
+								<input type="text" name="name" class="form-control" required>
+							</div>
 						</div>
-						<div class="form-group">
-							<label for="email">Email</label>
-							<input type="email" class="form-control" id="email" placeholder="Votre email" required>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<label for="email">Email</label>
+								<input type="email" name="email" class="form-control" required>
+							</div>
 						</div>
-						<div class="form-group">
-							<label for="phone">Numéro de Téléphone</label>
-							<input type="tel" class="form-control" id="phone" placeholder="Votre numéro de téléphone" required>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<label for="phone">Téléphone</label>
+								<input type="tel" name="phone" class="form-control" required>
+							</div>
 						</div>
-						<div class="form-group">
-							<label for="formation">Choix de la Formation</label>
-							<select class="form-control" id="formation" required>
-								<option value="">Sélectionnez une formation</option>
-								<option value="ingenierie">Ingénierie du Son</option>
-								<option value="beatmaking">Beatmaking</option>
-							</select>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<label for="formation">Formation souhaitée</label>
+								<select name="formation" class="form-control" required>
+									<option value="">Choisissez votre formation</option>
+									<option value="Ingénierie du Son">Ingénierie du Son</option>
+									<option value="Beatmaking">Beatmaking</option>
+								</select>
+							</div>
 						</div>
-						<div class="form-group">
-							<label for="format">Format de la Formation</label>
-							<select class="form-control" id="format" required>
-								<option value="">Sélectionnez un format</option>
-								<option value="semaine">Semaine</option>
-								<option value="mensuel">Mensuel</option>
-								<option value="distanciel">Distanciel</option>
-							</select>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<label for="message">Message (optionnel)</label>
+								<textarea name="message" cols="30" rows="5" class="form-control"></textarea>
+							</div>
 						</div>
+
 						<div class="form-group text-center">
-							<button type="submit" class="btn btn-primary">Envoyer</button>
+							<input type="submit" value="Envoyer" class="btn btn-primary">
 						</div>
 					</form>
 				</div>
@@ -670,6 +688,34 @@
         day: d.getDate(),
         enableUtc: false
     });
+	</script>
+	<script>
+		function handleSubmit(e) {
+			e.preventDefault();
+			
+			const formation = document.querySelector('select[name="formation"]').value;
+			const brochures = {
+				"Ingénierie du Son": "/brochures/brochure_ingenierie_son.pdf",
+				"Beatmaking": "/brochures/brochure_beatmaking.pdf"
+			};
+			
+			// Envoyer le formulaire à FormSubmit
+			fetch(e.target.action, {
+				method: 'POST',
+				body: new FormData(e.target)
+			}).then(() => {
+				// Après l'envoi, télécharger la brochure
+				if (brochures[formation]) {
+					window.location.href = brochures[formation];
+					// Rediriger vers la page de remerciement après un court délai
+					setTimeout(() => {
+						window.location.href = 'merci.html';
+					}, 1000);
+				}
+			});
+			
+			return false;
+		}
 	</script>
 	</body>
 </html>
